@@ -26,7 +26,7 @@ jobs:
   # Code linting checking, validation and resources plan
   code-validation:
     #name: Code validation
-    uses: .github/workflows/reusable-workflows/terraform-cloud-code-validation.template.yaml@main
+    uses: ./.github/workflows/reusable-workflows/terraform-cloud-code-validation.template.yaml@main
     with:
       target-directory: terraform/production/
     secrets:
