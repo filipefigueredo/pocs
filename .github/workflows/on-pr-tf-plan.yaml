@@ -15,12 +15,13 @@
 #name: Code Validation (production)
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  #pull_request:
+  #  types: [opened, synchronize, reopened]
+  #  branches: [main]
+  #  paths:
+  #    - "terraform/production/**"
+  push:
     branches: [main]
-    paths:
-      - "terraform/production/**"
-
 jobs:
   # Code linting checking, validation and resources plan
   code-validation:
