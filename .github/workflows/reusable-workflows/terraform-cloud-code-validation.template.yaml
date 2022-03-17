@@ -1,0 +1,60 @@
+#name: TF code validation
+
+on:
+  workflow_call:
+    inputs:
+      target-directory:
+        description: "Target working directory"
+        required: false
+        type: string
+
+    secrets:
+      terraform_cloud_api_token:
+        description: Terraform Cloud API token
+        required: true
+
+jobs:
+  terraform-validate-fmt-plan:
+    #name: Terraform fmt/validate/needs
+    runs-on: ubuntu-20.04
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./${{ inputs.target-directory }}
+
+    steps:
+      - run: echo ${{ inputs.target-directory }}
+      # Checkout repository
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v2
+
+      # Retrieves the terraform CLI used in the GitHub action workflow
+      - name: Setup Terraform
+        id: tf-setup
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.terraform_cloud_api_token }}
+          terraform_wrapper: false
+
+      # Checks whether the repository has been properly formatted.
+      # If it isn't properly formatted this step will produce an error.
+      - name: Terraform Format
+        id: tf-fmt
+        run: terraform fmt -check
+
+      # Initializes Terraform configurations.
+      - name: Terraform Init
+        id: tf-init
+        run: terraform init
+
+      # Validates Terraform configurations.
+      - name: Terraform Validate
+        id: tf-validate
+        run: terraform validate -no-color
+
+      # Generates a Terraform plan.
+      - name: Terraform Plan
+        id: tf-plan
+        run: terraform plan -input=false -no-color

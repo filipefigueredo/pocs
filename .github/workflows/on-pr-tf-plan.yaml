@@ -1,0 +1,32 @@
+###################################################################################################
+#
+# This github workflow implements integration tests which  validate that a newly introduced code
+# change doesn't break existing code. Whenever the code base is changed this workflow  will be
+# triggered
+#
+# Here are common examples of integration tests covered by this
+# workflow:
+#    - Static code analysis tools such as lint and format.
+#    - Run terraform validate to verify the syntax of the configuration file.
+#    - Run terraform plan to ensure the configuration will work as expected.
+#
+###################################################################################################
+
+#name: Code Validation (production)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+    paths:
+      - "terraform/production/**"
+
+jobs:
+  # Code linting checking, validation and resources plan
+  code-validation:
+    #name: Code validation
+    uses: .github/workflows/reusable-workflows/terraform-cloud-code-validation.template.yaml
+    with:
+      target-directory: terraform/production/
+    secrets:
+      terraform_cloud_api_token: ${{ secrets.TF_CLOUD_API_TOKEN }}
