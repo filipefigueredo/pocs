@@ -12,7 +12,7 @@
 #
 ###################################################################################################
 
-#name: Code Validation (production)
+name: tf code validation
 
 on:
   #pull_request:
