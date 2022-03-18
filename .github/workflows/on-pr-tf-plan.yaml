@@ -19,7 +19,7 @@ on:
   #  types: [opened, synchronize, reopened]
   #  branches: [main]
   #  paths:
-  #    - "terraform/production/**"
+  #    - "terraform/development/**"
   push:
     branches: [main]
 jobs:
