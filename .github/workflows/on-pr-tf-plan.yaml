@@ -28,6 +28,6 @@ jobs:
     #name: Code validation
     uses: ./.github/workflows/terraform-cloud-code-validation.template.yaml
     with:
-      target-directory: terraform/production/
+      target-directory: terraform/development/
     secrets:
       terraform_cloud_api_token: ${{ secrets.TF_CLOUD_API_TOKEN }}
