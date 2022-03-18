@@ -24,6 +24,7 @@ jobs:
         working-directory: ${{ inputs.target-directory }}
 
     steps:
+      - run: echo $(pwd)
       - run: echo ${{ inputs.target-directory }}
       # Checkout repository
       - name: Checkout
