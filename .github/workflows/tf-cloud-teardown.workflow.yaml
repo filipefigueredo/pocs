@@ -1,0 +1,45 @@
+name: tf cloud teardown
+
+on:
+  workflow_call:
+    inputs:
+      target-directory:
+        description: "Target working directory"
+        required: false
+        type: string
+
+    secrets:
+      terraform_cloud_api_token:
+        description: Terraform Cloud API token
+        required: true
+
+jobs:
+  # Destroy Terraform-managed infrastructure.  
+  tf-destroy:
+    name: Terraform destroy
+
+    runs-on: ubuntu-20.04
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./${{ inputs.target-directory }}
+
+    steps:
+      # Checkout repository
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Retrieves the terraform CLI used in the GitHub action workflow
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.terraform_cloud_api_token }}
+
+      # Initializes Terraform configurations.
+      - name: Terraform Init
+        run: terraform init
+
+      # Destroys terraform configuration
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve

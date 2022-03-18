@@ -1,0 +1,42 @@
+###################################################################################################
+#
+# This github workflow allows to create infrastructure resources every time a commit is pushed to
+# main branch or when the workflow is triggered via github portal or an external automation tool.
+#
+# Since this branch is protected, the only to this event happen is to merge a PR into main branch
+#
+###################################################################################################
+name: "Kitchen mobile: provisioning(bot)"
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment"
+        type: choice
+        options:
+          - production
+          - staging
+          - development
+        default: development
+
+jobs:
+  # Terraform provisioning
+  infrastructure-provisioning:
+    name: Infrastructure provisioning(${{ github.event.inputs.environment }})
+    uses: ./.github/workflows/tf-cloud-provision.workflow.yaml
+    with:
+      target-directory: terraform/${{ github.event.inputs.environment }}
+    secrets:
+      terraform_cloud_api_token: ${{ secrets.TF_CLOUD_API_TOKEN }}
+
+  # Invoke application pipeline
+  deploy-application:
+    name: Deploy Payroll App(${{ github.event.inputs.environment }})
+    needs: infrastructure-provisioning
+    uses: ./.github/workflows/azure-devops-pipeline-triggering.workflow.yaml
+    with:
+      azure-devops-project-url: "https://dev.azure.com/filipefigueredo/personal-pocs"
+      azure-devops-pipeline-name: personal-pocs
+      azure-devops-pipeline-variables: '{"App.Name": "mobile", "apptype.kitchen": "api,mobile,web,worker"}'
+    secrets:
+      azure-devops-access-token: ${{ secrets.AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN }}

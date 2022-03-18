@@ -1,0 +1,29 @@
+###################################################################################################
+#
+# This github workflow allows to destroy infrastructure resources every time a commit is pushed to
+# main branch or when the workflow is triggered via github portal or an external automation tool.
+#
+# Since this branch is protected, the only to this event happen is to merge a PR into main branch
+#
+###################################################################################################
+name: "Kitchen mobile: teardown(bot)"
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment"
+        type: choice
+        options:
+          - production
+          - staging
+          - development
+        default: development
+jobs:
+  # Terraform teardown
+  infrastructure-teardown:
+    name: Infrastructure teardown(${{ github.event.inputs.environment }})
+    uses: ./.github/workflows/tf-cloud-teardown.workflow.yaml
+    with:
+      target-directory: terraform/${{ github.event.inputs.environment }}
+    secrets:
+      terraform_cloud_api_token: ${{ secrets.TF_CLOUD_API_TOKEN }}

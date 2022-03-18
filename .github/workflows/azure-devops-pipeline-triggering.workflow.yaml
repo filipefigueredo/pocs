@@ -1,0 +1,40 @@
+name: azure pipeline invoking
+
+on:
+  workflow_call:
+    inputs:
+      azure-devops-project-url:
+        description: "Azure DevOps project url."
+        required: true
+        type: string
+      azure-devops-pipeline-name:
+        description: "Name of the Azure pipeline to be triggered."
+        required: true
+        type: string
+      azure-devops-pipeline-variables:
+        description: "Stringified JSON with variables and values that will be be passed to the pipeline."
+        required: false
+        type: string
+
+    secrets:
+      azure-devops-access-token:
+        description: Azure DevOps Personal Access Token.
+        required: true
+
+jobs:
+  azure-devops-pipeline-triggering:
+    name: Azure DevOps Pipeline triggering
+    runs-on: ubuntu-20.04
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Trigger Azure DevOps Pipeline "${{ inputs.azure-devops-pipeline-name }}"
+        uses: Azure/pipelines@v1.2
+        with:
+          azure-devops-project-url: ${{ inputs.azure-devops-project-url }}
+          azure-pipeline-name: ${{ inputs.azure-devops-pipeline-name }}
+          azure-devops-token: ${{ secrets.azure-devops-access-token }}
+          azure-pipeline-variables: ${{ inputs.azure-devops-pipeline-variables }}

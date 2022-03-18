@@ -1,4 +1,4 @@
-#name: TF code validation
+name: tf cloud code validation
 
 on:
   workflow_call:
@@ -14,8 +14,8 @@ on:
         required: true
 
 jobs:
-  terraform-validate-fmt-plan:
-    #name: Terraform fmt/validate/needs
+  tf-code-validation:
+    name: Terraform code validation
     runs-on: ubuntu-20.04
 
     defaults:
@@ -24,8 +24,6 @@ jobs:
         working-directory: ${{ inputs.target-directory }}
 
     steps:
-      - run: echo $(pwd)
-      - run: echo ${{ inputs.target-directory }}
       # Checkout repository
       - name: Checkout
         id: checkout
@@ -37,7 +35,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           cli_config_credentials_token: ${{ secrets.terraform_cloud_api_token }}
-          terraform_wrapper: false
+          terraform_wrapper: true
 
       # Checks whether the repository has been properly formatted.
       # If it isn't properly formatted this step will produce an error.

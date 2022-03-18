@@ -1,0 +1,38 @@
+name: tf code scanning
+
+on:
+  workflow_call:
+
+jobs:
+  tfsec-scan:
+    name: tfsec scan
+    runs-on: ubuntu-20.04
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      # Checkout repository
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v2
+
+      # Run tfsec scanning
+      - name: tfsec scanning
+        uses: tfsec/tfsec-sarif-action@v0.0.6
+        with:
+          sarif_file: tfsec.sarif
+
+      # Uploads SARIF file to see the result of tfsec in github repository
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: tfsec.sarif
+
+      # Add comments to PR in case of  potential vulnerabilities
+      - name: tfsec
+        uses: tfsec/tfsec-pr-commenter-action@v1.1.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}

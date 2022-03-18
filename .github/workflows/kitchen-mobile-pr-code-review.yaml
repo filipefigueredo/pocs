@@ -6,28 +6,32 @@
 #
 # Here are common examples of integration tests covered by this
 # workflow:
-#    - Static code analysis tools such as lint and format.
 #    - Run terraform validate to verify the syntax of the configuration file.
 #    - Run terraform plan to ensure the configuration will work as expected.
+#    - Static code analysis tools such as lint and format.
 #
 ###################################################################################################
 
-name: tf code validation
+name: "kitchen mobile: PR Code review"
 
 on:
-  #pull_request:
-  #  types: [opened, synchronize, reopened]
-  #  branches: [main]
-  #  paths:
-  #    - "terraform/development/**"
-  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
     branches: [main]
+    paths:
+      - "terraform/development/**"
+
 jobs:
-  # Code linting checking, validation and resources plan
-  code-validation:
-    #name: Code validation
-    uses: ./.github/workflows/terraform-cloud-code-validation.template.yaml
+  # Code linting checking, validation and resources planning
+  code-validation-dev:
+    name: Code validation
+    uses: ./.github/workflows/tf-cloud-code-validation.workflow.yaml
     with:
-      target-directory: terraform/development/
+      target-directory: terraform/development
     secrets:
       terraform_cloud_api_token: ${{ secrets.TF_CLOUD_API_TOKEN }}
+
+  # Static analysis security scanning
+  security-code-scanning:
+    name: Security code scanning
+    uses: ./.github/workflows/tfsec-code-scanning.workflow.yaml
