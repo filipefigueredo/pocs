@@ -19,7 +19,7 @@ on:
     types: [opened, synchronize, reopened]
     branches: [main]
     paths:
-      - terraform/development/**
+      - "terraform/development/**"
 
 jobs:
   # Code linting checking, validation and resources planning
