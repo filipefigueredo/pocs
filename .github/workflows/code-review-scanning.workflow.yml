@@ -1,0 +1,13 @@
+name: "PR Code review"
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+
+jobs:
+  # Static analysis security scanning
+  security-code-scanning:
+    name: Security code scanning
+    uses: nmbrs/reusable-workflows/.github/workflows/tfsec-code-scanning.workflow.yaml@main
