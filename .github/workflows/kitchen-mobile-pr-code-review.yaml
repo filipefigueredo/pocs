@@ -25,7 +25,7 @@ jobs:
   # Code linting checking, validation and resources planning
   code-validation-dev:
     name: Code validation
-    uses: filipefigueredo/pipeline-templates/.github/workflows/tf-cloud-code-validation.workflow.yaml@main
+    uses: nmbrs/reusable-workflows/.github/workflows/tf-cloud-code-validation.workflow.yaml@main
     with:
       target-directory: terraform/development
     secrets:
@@ -34,4 +34,4 @@ jobs:
   # Static analysis security scanning
   security-code-scanning:
     name: Security code scanning
-    uses: filipefigueredo/pipeline-templates/.github/workflows/tfsec-code-scanning.workflow.yaml@main
+    uses: nmbrs/reusable-workflows/.github/workflows/tfsec-code-scanning.workflow.yaml@main

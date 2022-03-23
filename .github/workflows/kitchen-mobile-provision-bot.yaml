@@ -23,7 +23,7 @@ jobs:
   # Terraform provisioning
   infrastructure-provisioning:
     name: Infrastructure provisioning(${{ github.event.inputs.environment }})
-    uses:  filipefigueredo/pipeline-templates/.github/workflows/tf-cloud-provision.workflow.yaml@main
+    uses:  nmbrs/reusable-workflows/.github/workflows/tf-cloud-provision.workflow.yaml@main
     with:
       target-directory: terraform/${{ github.event.inputs.environment }}
     secrets:
@@ -33,7 +33,7 @@ jobs:
   deploy-application:
     name: Deploy Payroll App(${{ github.event.inputs.environment }})
     needs: infrastructure-provisioning
-    uses:  filipefigueredo/pipeline-templates/.github/workflows/azure-devops-pipeline-triggering.workflow.yaml@main
+    uses:  nmbrs/reusable-workflows/.github/workflows/azure-devops-pipeline-triggering.workflow.yaml@main
     with:
       azure-devops-project-url: "https://dev.azure.com/filipefigueredo/personal-pocs"
       azure-devops-pipeline-name: personal-pocs
