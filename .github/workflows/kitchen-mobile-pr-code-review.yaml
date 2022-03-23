@@ -15,21 +15,17 @@
 name: "kitchen mobile: PR Code review"
 
 on:
-  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
     branches: [main]
-    path:
-      - terraform/development
-  #pull_request:
-  #  types: [opened, synchronize, reopened]
-  #  branches: [main]
-  #  paths:
-      - "terraform/development/**"
+    paths:
+      - terraform/development/**
 
 jobs:
   # Code linting checking, validation and resources planning
   code-validation-dev:
     name: Code validation
-    uses: filipefigueredo/pipeline-templates/.github/workflows/.github/workflows/tf-cloud-code-validation.workflow.yaml@main
+    uses: filipefigueredo/pipeline-templates/.github/workflows/tf-cloud-code-validation.workflow.yaml@main
     with:
       target-directory: terraform/development
     secrets:
