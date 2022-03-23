@@ -13,3 +13,7 @@ output "first_output" {
   value = local.test1
 }
 
+
+output "first_output" {
+  value = local.test2
+}
