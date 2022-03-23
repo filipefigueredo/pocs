@@ -14,6 +14,6 @@ output "first_output" {
 }
 
 
-output "first_output" {
+output "second_output" {
   value = local.test2
 }
