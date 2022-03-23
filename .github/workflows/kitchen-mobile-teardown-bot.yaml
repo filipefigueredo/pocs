@@ -22,7 +22,7 @@ jobs:
   # Terraform teardown
   infrastructure-teardown:
     name: Infrastructure teardown(${{ github.event.inputs.environment }})
-    uses: ./.github/workflows/tf-cloud-teardown.workflow.yaml
+    uses:  filipefigueredo/pipeline-templates/.github/workflows/.github/workflows/tf-cloud-teardown.workflow.yaml@main
     with:
       target-directory: terraform/${{ github.event.inputs.environment }}
     secrets:
