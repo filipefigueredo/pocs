@@ -6,7 +6,4 @@ module "resource_group" {
   product     = var.product
   country     = var.country
   squad       = var.squad
-  extra_tags = {
-    tag1 = "tag1"
-  }
 }
