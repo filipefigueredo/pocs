@@ -3,7 +3,7 @@ name: "kitchen mobile: PR Code review"
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: [master]
+    branches: [main]
     paths:
       - dev/kitchen-mobile/**
 

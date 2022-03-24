@@ -1,7 +1,7 @@
 name: "Kitchen mobile: provisioning(push)"
 on:
   push:
-    branches: [master]
+    branches: [main]
     paths:
       - dev/kitchen-mobile/**
 
