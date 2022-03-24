@@ -1,25 +1,17 @@
-###################################################################################################
-#
-# This github workflow allows to create infrastructure resources every time a commit is pushed to
-# main branch or when the workflow is triggered via github portal or an external automation tool.
-#
-# Since this branch is protected, the only to this event happen is to merge a PR into main branch
-#
-###################################################################################################
 name: "Kitchen mobile: provisioning(push)"
 on:
   push:
-    branches: [main]
+    branches: [master]
     paths:
-      - "terraform/development/**"
+      - dev/kitchen-mobile/**
 
 jobs:
   # Terraform provisioning
   infrastructure-provisioning:
     name: Infrastructure provisioning(development)
-    uses:  nmbrs/reusable-workflows/.github/workflows/tf-cloud-provision.workflow.yaml@main
+    uses: nmbrs/reusable-workflows/.github/workflows/tf-cloud-provision.workflow.yaml@main
     with:
-      target-directory: terraform/development
+      target-directory: dev/kitchen-mobile
     secrets:
       terraform_cloud_api_token: ${{ secrets.TF_CLOUD_API_TOKEN }}
 
@@ -29,8 +21,8 @@ jobs:
     needs: infrastructure-provisioning
     uses: nmbrs/reusable-workflows/.github/workflows/azure-devops-pipeline-triggering.workflow.yaml@main
     with:
-      azure-devops-project-url: "https://dev.azure.com/filipefigueredo/personal-pocs"
-      azure-devops-pipeline-name: personal-pocs
+      azure-devops-project-url: "https://dev.azure.com/nmbrs-projects/Payroll"
+      azure-devops-pipeline-name: "Nmbrs.Code.Mobile.Kitchen - CD - Github"
       azure-devops-pipeline-variables: '{"App.Name": "mobile", "apptype.kitchen": "api,mobile,web,worker"}'
     secrets:
-      azure-devops-access-token: ${{ secrets.AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN }}
+      azure-devops-access-token: ${{ secrets.AZURE_DEVOPS_TOKEN }}
