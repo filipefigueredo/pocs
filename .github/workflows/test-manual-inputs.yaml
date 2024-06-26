@@ -1,0 +1,19 @@
+---
+name: 'sup-dog'
+run-name: 'Sync "${{ inputs.environment }}" permissions for the resource group "rg-{{ inputs.workload }}-${{ inputs.environment }}'
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Azure environment"
+        required: true
+        type: choice
+        options:
+          - dev
+          - test
+          - prod
+          - sand
+      workload:
+        description: "Azure Workload"
+        required: true
+        type: string
