@@ -24,4 +24,4 @@ jobs:
     steps:
       - name: hey there
         run: |
-          echo 'Sync "${{ inputs.environment }}" permissions for the resource group "rg-{{ inputs.workload }}-${{ inputs.environment }}'
+          echo 'Sync "${{ inputs.environment }}" permissions for the resource group "rg-${{ inputs.workload }}-${{ inputs.environment }}"'
