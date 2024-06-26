@@ -1,6 +1,6 @@
 ---
 name: 'sup-dog'
-run-name: 'Sync "${{ inputs.environment }}" permissions for the resource group "rg-{{ inputs.workload }}-${{ inputs.environment }}'
+run-name: 'Sync "rg-${{ inputs.workload }}-${{ inputs.environment }}" permissions for "${{ inputs.environment }}"'
 on:
   workflow_dispatch:
     inputs:
