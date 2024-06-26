@@ -17,3 +17,11 @@ on:
         description: "Azure Workload"
         required: true
         type: string
+jobs:
+  my_job:
+    name: no thanks
+    runs-on: ubuntu-22.04
+    steps:
+      - name: hey there
+        run: |
+          echo 'Sync "${{ inputs.environment }}" permissions for the resource group "rg-{{ inputs.workload }}-${{ inputs.environment }}'
